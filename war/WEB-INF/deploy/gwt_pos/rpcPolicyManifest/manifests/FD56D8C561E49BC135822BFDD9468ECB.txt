@@ -1,0 +1,2 @@
+serviceClass: web.prog.client.GreetingService
+path: 8E70FEEBC7C2C00F443505183873DB2A.gwt.rpc
