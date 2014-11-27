@@ -1,6 +1,7 @@
 package web.prog.client;
 
 import web.prog.shared.FieldVerifier;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,6 +14,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -41,12 +43,13 @@ public class GWT_POS implements EntryPoint {
 	public void onModuleLoad() {
 		final Button loginButton = new Button("Login");
 		final TextBox usernameField = new TextBox();
-		final TextBox passwordField = new TextBox();
+		final PasswordTextBox passwordField = new PasswordTextBox();
+		
+		passwordField.setWidth("176px");
+		passwordField.setHeight("18px");
+		loginButton.setWidth("188px");
 		//usernameField.setText("GWT User");
 		final Label errorLabel = new Label();
-
-		// We can add style names to widgets
-		loginButton.addStyleName("sendButton");
 
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
@@ -57,37 +60,8 @@ public class GWT_POS implements EntryPoint {
 
 		// Focus the cursor on the name field when the app loads
 		usernameField.setFocus(true);
-		usernameField.selectAll();
 
-		// Create the popup dialog box
-		final DialogBox dialogBox = new DialogBox();
-		dialogBox.setText("Remote Procedure Call");
-		dialogBox.setAnimationEnabled(true);
-		final Button closeButton = new Button("Close");
-		// We can set the id of a widget by accessing its Element
-		closeButton.getElement().setId("closeButton");
-		final Label textToServerLabel = new Label();
-		final HTML serverResponseLabel = new HTML();
-		VerticalPanel dialogVPanel = new VerticalPanel();
-		dialogVPanel.addStyleName("dialogVPanel");
-		dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
-		dialogVPanel.add(textToServerLabel);
-		dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
-		dialogVPanel.add(serverResponseLabel);
-		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-		dialogVPanel.add(closeButton);
-		dialogBox.setWidget(dialogVPanel);
-
-		// Add a handler to close the DialogBox
-		closeButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				dialogBox.hide();
-				loginButton.setEnabled(true);
-				loginButton.setFocus(true);
-			}
-		});
-
-		// Create a handler for the sendButton and nameField
+		// Create a handler for the loginButton and testFi
 		class MyHandler implements ClickHandler, KeyUpHandler {
 			/**
 			 * Fired when the user clicks on the sendButton.
@@ -96,7 +70,7 @@ public class GWT_POS implements EntryPoint {
 				sendNameToServer();
 			}
 
-			/**
+		    /**
 			 * Fired when the user types in the nameField.
 			 */
 			public void onKeyUp(KeyUpEvent event) {
@@ -111,38 +85,29 @@ public class GWT_POS implements EntryPoint {
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = usernameField.getText();
-				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
+				String username = usernameField.getText();
+				String password = passwordField.getText();
+				if (!FieldVerifier.isValidUserName(username) || !FieldVerifier.isValidPassword(password)) {
+					errorLabel.setText("The username and/or password is not correct");
 					return;
 				}
 
 				// Then, we send the input to the server.
 				loginButton.setEnabled(false);
-				textToServerLabel.setText(textToServer);
-				serverResponseLabel.setText("");
-				greetingService.greetServer(textToServer,
-						new AsyncCallback<String>() {
-							public void onFailure(Throwable caught) {
-								// Show the RPC error message to the user
-								dialogBox
-										.setText("Remote Procedure Call - Failure");
-								serverResponseLabel
-										.addStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(SERVER_ERROR);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
-
-							public void onSuccess(String result) {
-								dialogBox.setText("Remote Procedure Call");
-								serverResponseLabel
-										.removeStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(result);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
-						});
+//				greetingService.greetServer(textToServer,
+//						new AsyncCallback<String>() {
+//							@Override
+//							public void onFailure(Throwable caught) {
+//								// TODO Auto-generated method stub
+//								
+//							}
+//
+//							@Override
+//							public void onSuccess(String result) {
+//								// TODO Auto-generated method stub
+//								
+//							}
+//						});
 			}
 		}
 
