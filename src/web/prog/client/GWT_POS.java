@@ -45,10 +45,14 @@ public class GWT_POS implements EntryPoint {
 		final TextBox usernameField = new TextBox();
 		final PasswordTextBox passwordField = new PasswordTextBox();
 		
+		final Button logoutButton = new Button("Logout");
+		logoutButton.setWidth("188px");
+		logoutButton.setEnabled(false);
+		
 		passwordField.setWidth("176px");
 		passwordField.setHeight("18px");
 		loginButton.setWidth("188px");
-		//usernameField.setText("GWT User");
+		
 		final Label errorLabel = new Label();
 
 		// Add the nameField and sendButton to the RootPanel
@@ -57,6 +61,7 @@ public class GWT_POS implements EntryPoint {
 		RootPanel.get("passwordFieldContainer").add(passwordField);
 		RootPanel.get("loginButtonContainer").add(loginButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
+		RootPanel.get("logoutButtonContainer").add(logoutButton);
 
 		// Focus the cursor on the name field when the app loads
 		usernameField.setFocus(true);
@@ -64,14 +69,14 @@ public class GWT_POS implements EntryPoint {
 		// Create a handler for the loginButton and testFi
 		class MyHandler implements ClickHandler, KeyUpHandler {
 			/**
-			 * Fired when the user clicks on the sendButton.
+			 * Fired when the user clicks on the loginButton.
 			 */
 			public void onClick(ClickEvent event) {
 				sendNameToServer();
 			}
 
 		    /**
-			 * Fired when the user types in the nameField.
+			 * Fired when the user types in the usernameField.
 			 */
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
@@ -90,6 +95,9 @@ public class GWT_POS implements EntryPoint {
 				if (!LoginVerifier.areCredentialsGood(username, password)) {
 					errorLabel.setText("The username and/or password is not correct");
 					return;
+				}
+				else{
+					
 				}
 
 				// Then, we send the input to the server.
