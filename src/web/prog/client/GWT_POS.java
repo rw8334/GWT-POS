@@ -1,6 +1,6 @@
 package web.prog.client;
 
-import web.prog.shared.FieldVerifier;
+import web.prog.shared.LoginVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -87,7 +87,7 @@ public class GWT_POS implements EntryPoint {
 				errorLabel.setText("");
 				String username = usernameField.getText();
 				String password = passwordField.getText();
-				if (!FieldVerifier.isValidUserName(username) || !FieldVerifier.isValidPassword(password)) {
+				if (!LoginVerifier.areCredentialsGood(username, password)) {
 					errorLabel.setText("The username and/or password is not correct");
 					return;
 				}

@@ -1,7 +1,7 @@
 package web.prog.server;
 
 import web.prog.client.GreetingService;
-import web.prog.shared.FieldVerifier;
+import web.prog.shared.LoginVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
