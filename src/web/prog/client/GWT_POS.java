@@ -3,39 +3,22 @@ package web.prog.client;
 import web.prog.shared.LoginVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class GWT_POS implements EntryPoint {
-	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
-	 */
-	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network "
-			+ "connection and try again.";
-
-	/**
-	 * Create a remote service proxy to talk to the server-side Greeting service.
-	 */
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
 
 	/**
 	 * This is the entry point method.
@@ -44,16 +27,14 @@ public class GWT_POS implements EntryPoint {
 		final Button loginButton = new Button("Login");
 		final TextBox usernameField = new TextBox();
 		final PasswordTextBox passwordField = new PasswordTextBox();
+		final Label errorLabel = new Label();
 		
 		final Button logoutButton = new Button("Logout");
 		logoutButton.setWidth("188px");
-		logoutButton.setEnabled(false);
 		
 		passwordField.setWidth("176px");
 		passwordField.setHeight("18px");
 		loginButton.setWidth("188px");
-		
-		final Label errorLabel = new Label();
 
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
@@ -65,8 +46,9 @@ public class GWT_POS implements EntryPoint {
 
 		// Focus the cursor on the name field when the app loads
 		usernameField.setFocus(true);
+		logoutButton.setVisible(false);
 
-		// Create a handler for the loginButton and testFi
+		// Create a handler for the loginButton
 		class MyHandler implements ClickHandler, KeyUpHandler {
 			/**
 			 * Fired when the user clicks on the loginButton.
@@ -78,11 +60,7 @@ public class GWT_POS implements EntryPoint {
 		    /**
 			 * Fired when the user types in the usernameField.
 			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					sendNameToServer();
-				}
-			}
+			public void onKeyUp(KeyUpEvent event) {}
 
 			/**
 			 * Send the name from the nameField to the server and wait for a response.
@@ -97,26 +75,15 @@ public class GWT_POS implements EntryPoint {
 					return;
 				}
 				else{
-					
+					Document.get().getElementById("loginPage").getStyle().setVisibility(Visibility.HIDDEN);
+					logoutButton.setVisible(true);
 				}
 
 				// Then, we send the input to the server.
 				loginButton.setEnabled(false);
-//				greetingService.greetServer(textToServer,
-//						new AsyncCallback<String>() {
-//							@Override
-//							public void onFailure(Throwable caught) {
-//								// TODO Auto-generated method stub
-//								
-//							}
-//
-//							@Override
-//							public void onSuccess(String result) {
-//								// TODO Auto-generated method stub
-//								
-//							}
-//						});
+
 			}
+			
 		}
 
 		// Add a handler to send the name to the server
