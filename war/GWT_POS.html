@@ -49,59 +49,62 @@
 	<h1>Web Programming - Google Web Toolkit Project</h1>
 	<h2 align="center">Ryan Weaver & Josh Lineaweaver</h2>
 
-	<div id="all">
-		<table align="left">
+	<div id="login">
+		<table align="center">
 			<tr>
-				<td id="logoutButtonContainer"></td>
+				<td id="credentials" colspan="2" style="font-weight: bold;">Please
+					login with your credentials:</td>
+			</tr>
+			<tr>
+				<td id="userName">User Name:</td>
+				<td id="usernameField"></td>
+			</tr>
+			<tr>
+				<td id="password">Password:</td>
+				<td id="passwordField"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td id="loginButton"></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="color: red;" id="errorLabel"></td>
 			</tr>
 		</table>
-		<div id="loginPage">
-			<table align="center">
-				<tr>
-					<td id="credentials" colspan="2" style="font-weight: bold;">Please
-						login with your credentials:</td>
-				</tr>
-				<tr>
-					<td id="userName">User Name:</td>
-					<td id="usernameField"></td>
-				</tr>
-				<tr>
-					<td id="password">Password:</td>
-					<td id="passwordField"></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td id="loginButton"></td>
-				</tr>
-				<tr>
-					<td colspan="2" style="color: red;" id="errorLabel"></td>
-				</tr>
-			</table>
-		</div>
+	</div>
+	<div id="logout">
+		<table align="left">
+			<tr>
+				<td id="logoutButton"></td>
+			</tr>
+		</table>
+		<br />
+		<br />
+		<br />
+		<br />
+	</div>
+	<div id="menu">
+		<table align="left">
+			<tr>
+				<td id="createInvButton"></td>
+			</tr>
+			<tr>
+				<td id="deleteInvButton"></td>
+			</tr>
+			<tr>
+				<td id="editInvButton"></td>
+			</tr>
+			<tr>
+				<td id="createCustRecButton"></td>
+			</tr>
+			<tr>
+				<td id="createPOSTranButton"></td>
+			</tr>
+			<tr>
+				<td id="listTranButton"></td>
+			</tr>
 
-		<div id="menu">
-			<table align="left">
-				<tr>
-					<td id="createInvButton"></td>
-				</tr>
-				<tr>
-					<td id="deleteInvButton"></td>
-				</tr>
-				<tr>
-					<td id="editInvButton"></td>
-				</tr>
-				<tr>
-					<td id="createCustRecButton"></td>
-				</tr>
-				<tr>
-					<td id="createPOSTranButton"></td>
-				</tr>
-				<tr>
-					<td id="listTranButton"></td>
-				</tr>
-
-			</table>
-		</div>
+		</table>
 	</div>
 </body>
 </html>
