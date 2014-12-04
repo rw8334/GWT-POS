@@ -48,6 +48,8 @@ public class GWT_POS implements EntryPoint {
 	final TextBox custID = new TextBox();
 	final Button createCustSubmitButton = new Button("Submit");
 
+	// Sub Fields for POST
+	
 	/**
 	 * This is the entry point method.
 	 */
@@ -484,5 +486,9 @@ public class GWT_POS implements EntryPoint {
 				.setDisplay(Display.NONE);
 		Document.get().getElementById("sub10").getStyle()
 				.setDisplay(Display.NONE);
+	}
+	
+	private void  showThirdSubMenu() {
+		
 	}
 }
