@@ -487,8 +487,4 @@ public class GWT_POS implements EntryPoint {
 		Document.get().getElementById("sub10").getStyle()
 				.setDisplay(Display.NONE);
 	}
-	
-	private void  showThirdSubMenu() {
-		
-	}
 }
