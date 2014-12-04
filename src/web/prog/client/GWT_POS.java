@@ -1,7 +1,6 @@
 package web.prog.client;
 
 import web.prog.shared.LoginVerifier;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Display;
@@ -11,7 +10,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -36,6 +34,7 @@ public class GWT_POS implements EntryPoint {
 	final Button createPOSTranButton = new Button("Create POS Transaction");
 	final Button listTranButton = new Button("List Transactions");
 
+	// Sub fields for creating a new inventory item
 	final TextBox descriptionField = new TextBox();
 	final TextBox skuField = new TextBox();
 	final TextBox pictureField = new TextBox();
@@ -43,24 +42,20 @@ public class GWT_POS implements EntryPoint {
 	final TextBox inventoryField = new TextBox();
 	final Button createInvSubmitButton = new Button("Submit");
 
+	// Sub fields for creating a new customer
+	final TextBox custFirstName = new TextBox();
+	final TextBox custLastName = new TextBox();
+	final TextBox custID = new TextBox();
+	final Button createCustSubmitButton = new Button("Submit");
+
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
 
 		hideAll();
-		Document.get().getElementById("sub1").getStyle()
-				.setDisplay(Display.NONE);
-		Document.get().getElementById("sub2").getStyle()
-				.setDisplay(Display.NONE);
-		Document.get().getElementById("sub3").getStyle()
-				.setDisplay(Display.NONE);
-		Document.get().getElementById("sub4").getStyle()
-				.setDisplay(Display.NONE);
-		Document.get().getElementById("sub5").getStyle()
-				.setDisplay(Display.NONE);
-		Document.get().getElementById("sub6").getStyle()
-				.setDisplay(Display.NONE);
+		hideFirstSubMenu();
+		hideSecondSubMenu();
 
 		setLoginVisible(true);
 		setLogoutVisible(false);
@@ -96,13 +91,19 @@ public class GWT_POS implements EntryPoint {
 		RootPanel.get("createPOSTranButton").add(createPOSTranButton);
 		RootPanel.get("listTranButton").add(listTranButton);
 
-		// Add sub menu information to Root Panel
+		// Add sub menu information for create inventory to Root Panel
 		RootPanel.get("descriptionField").add(descriptionField);
 		RootPanel.get("skuField").add(skuField);
 		RootPanel.get("pictureField").add(pictureField);
 		RootPanel.get("priceField").add(priceField);
 		RootPanel.get("inventoryField").add(inventoryField);
 		RootPanel.get("createInvSubmitButton").add(createInvSubmitButton);
+
+		// Add sub menu information for create customer to Root Panel
+		RootPanel.get("custFirstName").add(custFirstName);
+		RootPanel.get("custLastName").add(custLastName);
+		RootPanel.get("custID").add(custID);
+		RootPanel.get("createCustSubmitButton").add(createCustSubmitButton);
 
 		// Focus the cursor on the name field when the app loads
 		usernameField.setFocus(true);
@@ -158,53 +159,13 @@ public class GWT_POS implements EntryPoint {
 						.setDisplay(Display.BLOCK);
 
 				if (createInvCount % 2 == 1) {
-					Document.get().getElementById("sub1").getStyle()
+					showFirstSubMenu();
+					hideMenu();
+					Document.get().getElementById("createInvButton").getStyle()
 							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("sub2").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("sub3").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("sub4").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("sub5").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("sub6").getStyle()
-							.setDisplay(Display.BLOCK);
-
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.NONE);
 				} else {
-					Document.get().getElementById("sub1").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("sub2").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("sub3").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("sub4").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("sub5").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("sub6").getStyle()
-							.setDisplay(Display.NONE);
-
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.BLOCK);
+					hideFirstSubMenu();
+					showMenu();
 				}
 			}
 		}
@@ -224,28 +185,12 @@ public class GWT_POS implements EntryPoint {
 						.setDisplay(Display.BLOCK);
 
 				if (deleteInvCount % 2 == 1) {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.NONE);
+					hideMenu();
+					Document.get().getElementById("deleteInvButton").getStyle()
+							.setDisplay(Display.BLOCK);
 
 				} else {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.BLOCK);
+					showMenu();
 				}
 			}
 		}
@@ -265,27 +210,11 @@ public class GWT_POS implements EntryPoint {
 						.setDisplay(Display.BLOCK);
 
 				if (editInvCount % 2 == 1) {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.NONE);
+					hideMenu();
+					Document.get().getElementById("editInvButton").getStyle()
+							.setDisplay(Display.BLOCK);
 				} else {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.BLOCK);
+					showMenu();
 				}
 			}
 		}
@@ -305,27 +234,13 @@ public class GWT_POS implements EntryPoint {
 						.setDisplay(Display.BLOCK);
 
 				if (createCustCount % 2 == 1) {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.NONE);
-				} else {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("createPOSTranButton")
+					showSecondSubMenu();
+					hideMenu();
+					Document.get().getElementById("createCustRecButton")
 							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.BLOCK);
+				} else {
+					hideSecondSubMenu();
+					showMenu();
 				}
 			}
 		}
@@ -345,27 +260,11 @@ public class GWT_POS implements EntryPoint {
 						.setDisplay(Display.BLOCK);
 
 				if (createPOSCount % 2 == 1) {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.NONE);
-				} else {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("createCustRecButton")
+					hideMenu();
+					Document.get().getElementById("createPOSTranButton")
 							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("listTranButton").getStyle()
-							.setDisplay(Display.BLOCK);
+				} else {
+					showMenu();
 				}
 			}
 		}
@@ -385,27 +284,11 @@ public class GWT_POS implements EntryPoint {
 						.setDisplay(Display.BLOCK);
 
 				if (listTranCount % 2 == 1) {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.NONE);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.NONE);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.NONE);
+					hideMenu();
+					Document.get().getElementById("listTranButton").getStyle()
+							.setDisplay(Display.BLOCK);
 				} else {
-					Document.get().getElementById("createInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("deleteInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("editInvButton").getStyle()
-							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("createCustRecButton")
-							.getStyle().setDisplay(Display.BLOCK);
-					Document.get().getElementById("createPOSTranButton")
-							.getStyle().setDisplay(Display.BLOCK);
+					showMenu();
 				}
 			}
 		}
@@ -459,13 +342,13 @@ public class GWT_POS implements EntryPoint {
 						setWidget(panel);
 					}
 				}
-				
+
 				MyDialog myDialog = new MyDialog();
 				int left = Window.getClientWidth() / 2;
 				int top = Window.getClientHeight() / 2;
 				myDialog.setPopupPosition(left, top);
 				myDialog.show();
-				
+
 				descriptionField.setText("");
 				skuField.setText("");
 				pictureField.setText("");
@@ -518,5 +401,88 @@ public class GWT_POS implements EntryPoint {
 			Document.get().getElementById("logout").getStyle()
 					.setVisibility(Visibility.HIDDEN);
 		}
+	}
+
+	private void hideMenu() {
+		Document.get().getElementById("createInvButton").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("deleteInvButton").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("editInvButton").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("createCustRecButton").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("createPOSTranButton").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("listTranButton").getStyle()
+				.setDisplay(Display.NONE);
+	}
+
+	private void showMenu() {
+
+		Document.get().getElementById("createInvButton").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("deleteInvButton").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("editInvButton").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("createCustRecButton").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("createPOSTranButton").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("listTranButton").getStyle()
+				.setDisplay(Display.BLOCK);
+	}
+
+	private void showFirstSubMenu() {
+		Document.get().getElementById("sub1").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub2").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub3").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub4").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub5").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub6").getStyle()
+				.setDisplay(Display.BLOCK);
+	}
+
+	private void hideFirstSubMenu() {
+		Document.get().getElementById("sub1").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub2").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub3").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub4").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub5").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub6").getStyle()
+				.setDisplay(Display.NONE);
+	}
+
+	private void showSecondSubMenu() {
+		Document.get().getElementById("sub7").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub8").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub9").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub10").getStyle()
+				.setDisplay(Display.BLOCK);
+	}
+
+	private void hideSecondSubMenu() {
+		Document.get().getElementById("sub7").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub8").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub9").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub10").getStyle()
+				.setDisplay(Display.NONE);
 	}
 }
