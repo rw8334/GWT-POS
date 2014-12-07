@@ -1,20 +1,22 @@
 package web.prog.client;
 
+import java.util.ArrayList;
+
+import web.prog.shared.InventoryItem;
+import web.prog.shared.InventoryTable;
 import web.prog.shared.LoginVerifier;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -48,8 +50,15 @@ public class GWT_POS implements EntryPoint {
 	final TextBox custID = new TextBox();
 	final Button createCustSubmitButton = new Button("Submit");
 
-	// Sub Fields for POST
-	
+	public ArrayList<InventoryItem> invList = new ArrayList<InventoryItem>();
+
+	public InventoryTable table = new InventoryTable();
+
+	int currentNumberOfItems = 0;
+	int totalNum = 0;
+
+	// Sub Fields for POSTran
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -58,6 +67,8 @@ public class GWT_POS implements EntryPoint {
 		hideAll();
 		hideFirstSubMenu();
 		hideSecondSubMenu();
+		hideThirdSubMenu();
+		setVisibilityForAllFields();
 
 		setLoginVisible(true);
 		setLogoutVisible(false);
@@ -215,7 +226,16 @@ public class GWT_POS implements EntryPoint {
 					hideMenu();
 					Document.get().getElementById("editInvButton").getStyle()
 							.setDisplay(Display.BLOCK);
+					Document.get().getElementById("invTable").getStyle()
+							.setDisplay(Display.BLOCK);
+
+					table.tableDraw();
+
+					RootPanel.get("invTable").add(table.table);
+
 				} else {
+					Document.get().getElementById("invTable").getStyle()
+							.setDisplay(Display.NONE);
 					showMenu();
 				}
 			}
@@ -263,10 +283,12 @@ public class GWT_POS implements EntryPoint {
 
 				if (createPOSCount % 2 == 1) {
 					hideMenu();
+					showThirdSubMenu();
 					Document.get().getElementById("createPOSTranButton")
 							.getStyle().setDisplay(Display.BLOCK);
 				} else {
 					showMenu();
+					hideThirdSubMenu();
 				}
 			}
 		}
@@ -309,47 +331,13 @@ public class GWT_POS implements EntryPoint {
 				final String price = priceField.getText();
 				final String inv = inventoryField.getText();
 
-				class MyDialog extends DialogBox {
+				final InventoryItem invItem = new InventoryItem(description,
+						sku, pictureLink, price, inv);
 
-					public MyDialog() {
-						setText("New Inventory Item");
-						setAnimationEnabled(true);
-
-						setGlassEnabled(true);
-
-						Button ok = new Button("OK");
-						ok.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								MyDialog.this.hide();
-							}
-						});
-
-						Label label1 = new Label("Description: " + description);
-						Label label2 = new Label("SKU: " + sku);
-						Label label3 = new Label("Picture Link: " + pictureLink);
-						Label label4 = new Label("Price: " + price);
-						Label label5 = new Label("Number of Items: " + inv);
-
-						VerticalPanel panel = new VerticalPanel();
-						panel.setHeight("100");
-						panel.setWidth("300");
-						panel.setSpacing(10);
-						panel.add(label1);
-						panel.add(label2);
-						panel.add(label3);
-						panel.add(label4);
-						panel.add(label5);
-						panel.add(ok);
-
-						setWidget(panel);
-					}
-				}
-
-				MyDialog myDialog = new MyDialog();
-				int left = Window.getClientWidth() / 2;
-				int top = Window.getClientHeight() / 2;
-				myDialog.setPopupPosition(left, top);
-				myDialog.show();
+				invList.add(invItem);
+				table.invList.add(invItem);
+				currentNumberOfItems++;
+				totalNum++;
 
 				descriptionField.setText("");
 				skuField.setText("");
@@ -486,5 +474,54 @@ public class GWT_POS implements EntryPoint {
 				.setDisplay(Display.NONE);
 		Document.get().getElementById("sub10").getStyle()
 				.setDisplay(Display.NONE);
+	}
+
+	private void hideThirdSubMenu() {
+		Document.get().getElementById("sub11").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub12").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub13").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub14").getStyle()
+				.setDisplay(Display.NONE);
+	}
+
+	private void showThirdSubMenu() {
+		Document.get().getElementById("sub11").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub12").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub13").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub14").getStyle()
+				.setDisplay(Display.BLOCK);
+	}
+
+	private void setVisibilityForAllFields() {
+		Document.get().getElementById("descriptionField").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("skuField").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("pictureField").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("priceField").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("inventoryField").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("custFirstName").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("custLastName").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("custID").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("createPOSTCustName").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("createPOSTAddItems").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("createPOSTTotal").getStyle()
+				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("createPOSTReceiptPaid").getStyle()
+				.setVisibility(Visibility.VISIBLE);
 	}
 }

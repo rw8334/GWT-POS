@@ -7,15 +7,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-<!--                                                               -->
-<!-- Consider inlining CSS to reduce the number of requested files -->
-<!--                                                               -->
 <link type="text/css" rel="stylesheet" href="GWT_POS.css">
-
-<!--                                           -->
-<!-- Any title is fine                         -->
-<!--                                           -->
 <title>GWT Project</title>
 
 <!--                                           -->
@@ -25,19 +17,16 @@
 <!--                                           -->
 <script type="text/javascript" language="javascript"
 	src="gwt_pos/gwt_pos.nocache.js"></script>
+	
+<script>
+.hide{
+
+visibility: hidden
+
+}
+</script>
 </head>
-
-<!--                                           -->
-<!-- The body can have arbitrary html, or      -->
-<!-- you can leave the body empty if you want  -->
-<!-- to create a completely dynamic UI.        -->
-<!--                                           -->
 <body>
-
-	<!-- OPTIONAL: include this if you want history support -->
-	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
-		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
-
 	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
 	<noscript>
 		<div
@@ -86,19 +75,19 @@
 				<td id="createInvButton"></td>
 			</tr>
 			<tr id="sub1">
-				<td id="descriptionField">Description:</td>
+				<td id="descriptionField" style="visibility:hidden">Description:</td>
 			</tr>
 			<tr id="sub2">
-				<td id="skuField">SKU:</td>		
+				<td id="skuField" style="visibility:hidden">SKU:</td>		
 			</tr>
 			<tr id="sub3">
-				<td id="pictureField">Link to Picture:</td>		
+				<td id="pictureField" style="visibility:hidden">Link to Picture:</td>		
 			</tr>
 			<tr id="sub4">
-				<td id="priceField">Price:</td>		
+				<td id="priceField" style="visibility:hidden">Price:</td>		
 			</tr>
 			<tr id="sub5">
-				<td id="inventoryField">Inventory:</td>		
+				<td id="inventoryField" style="visibility:hidden">Inventory:</td>		
 			</tr>
 			<tr id="sub6">
 				<td id="createInvSubmitButton"></td>		
@@ -110,16 +99,19 @@
 				<td id="editInvButton"></td>
 			</tr>
 			<tr>
+				<td id="invTable"></td>
+			</tr>
+			<tr>
 				<td id="createCustRecButton"></td>
 			</tr>
 			<tr id="sub7">
-				<td id="custFirstName">First Name:</td>
+				<td id="custFirstName" style="visibility:hidden">First Name:</td>
 			</tr>
 			<tr id="sub8">
-				<td id="custLastName">Last Name:</td>
+				<td id="custLastName" style="visibility:hidden">Last Name:</td>
 			</tr>
 			<tr id="sub9">
-				<td id="custID">Customer ID:</td>
+				<td id="custID" style="visibility:hidden">Customer ID:</td>
 			</tr>
 			<tr id="sub10">
 				<td id="createCustSubmitButton"></td>
@@ -128,16 +120,16 @@
 				<td id="createPOSTranButton"></td>
 			</tr>
 			<tr id="sub11">
-				<td id="createPOSTCustName">Customer Name:</td>
+				<td id="createPOSTCustName" style="visibility:hidden">Customer Name:</td>
 			</tr>
 			<tr id="sub12">
-				<td id="createPOSTAddItems">Add Items To Receipt</td>
+				<td id="createPOSTAddItems" style="visibility:hidden">Add Items To Receipt:</td>
 			</tr>
 			<tr id="sub13">
-				<td id="createPOSTTotal">Show Total:</td>
+				<td id="createPOSTTotal" style="visibility:hidden">Show Total:</td>
 			</tr>
 			<tr id="sub14">
-				<td id="createPOSTReceiptPaid">Pay The Receipt</td>
+				<td id="createPOSTReceiptPaid" style="visibility:hidden">Pay The Receipt:</td>
 			</tr>
 			<tr>
 				<td id="listTranButton"></td>
