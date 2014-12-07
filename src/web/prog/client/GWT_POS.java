@@ -52,7 +52,8 @@ public class GWT_POS implements EntryPoint {
 
 	public ArrayList<InventoryItem> invList = new ArrayList<InventoryItem>();
 
-	public InventoryTable table = new InventoryTable();
+	public InventoryTable editTable = new InventoryTable();
+	public InventoryTable deleteTable = new InventoryTable();
 
 	int currentNumberOfItems = 0;
 	int totalNum = 0;
@@ -201,9 +202,17 @@ public class GWT_POS implements EntryPoint {
 					hideMenu();
 					Document.get().getElementById("deleteInvButton").getStyle()
 							.setDisplay(Display.BLOCK);
+					Document.get().getElementById("deleteInvTable").getStyle()
+							.setDisplay(Display.BLOCK);
 
+					deleteTable.tableDraw();
+
+					RootPanel.get("deleteInvTable").add(deleteTable.table);
 				} else {
+
 					showMenu();
+					Document.get().getElementById("deleteInvTable").getStyle()
+							.setDisplay(Display.NONE);
 				}
 			}
 		}
@@ -226,15 +235,15 @@ public class GWT_POS implements EntryPoint {
 					hideMenu();
 					Document.get().getElementById("editInvButton").getStyle()
 							.setDisplay(Display.BLOCK);
-					Document.get().getElementById("invTable").getStyle()
+					Document.get().getElementById("editInvTable").getStyle()
 							.setDisplay(Display.BLOCK);
 
-					table.tableDraw();
+					editTable.tableDraw();
 
-					RootPanel.get("invTable").add(table.table);
+					RootPanel.get("editInvTable").add(editTable.table);
 
 				} else {
-					Document.get().getElementById("invTable").getStyle()
+					Document.get().getElementById("editInvTable").getStyle()
 							.setDisplay(Display.NONE);
 					showMenu();
 				}
@@ -335,7 +344,8 @@ public class GWT_POS implements EntryPoint {
 						sku, pictureLink, price, inv);
 
 				invList.add(invItem);
-				table.invList.add(invItem);
+				editTable.invList.add(invItem);
+				deleteTable.invList.add(invItem);
 				currentNumberOfItems++;
 				totalNum++;
 
