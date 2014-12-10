@@ -357,12 +357,13 @@ public class GWT_POS implements EntryPoint {
 				editTable.invList.add(invItem);
 				deleteTable.invList.add(invItem);
 				
-				itemListBox.addItem(invItem.getDescription() + " - $" + invItem.getPrice());
-				itemListBox.setVisibleItemCount(1);
+				double priceNum = Double.parseDouble(price);
 				
-				//itemListBox.
 				currentNumberOfItems++;
 				totalNum++;
+				
+				itemListBox.addItem(invItem.getDescription() + " - $" + priceNum);
+				itemListBox.setVisibleItemCount(1);				
 
 				descriptionField.setText("");
 				skuField.setText("");
