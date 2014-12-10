@@ -78,6 +78,16 @@ public class TransactionTable {
 			list.add(t);
 		}
 	}
+	
+	public void tableDraw(int index) {
+		reinitialize();
+		List<POSTransaction> list = dataProvider.getList();
+		
+		for(POSTransaction t : transactionList){
+			if(t.getCustomer().getCustomerID()==index)
+				list.add(t);
+		}
+	}
 
 	public void reinitialize() {
 

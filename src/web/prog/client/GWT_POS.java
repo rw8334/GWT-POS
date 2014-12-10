@@ -61,7 +61,8 @@ public class GWT_POS implements EntryPoint {
 	final Button createPOSTransactionSubmitButton = new Button("Submit");
 	final Label createPOSTransactionTotal = new Label("0.00");
 	final ListBox createPOSTransactionPaid = new ListBox();
-
+	final ListBox transCustomerListBox = new ListBox();
+	final Button transCustomerButton = new Button("Filter");
 	public ArrayList<InventoryItem> invList = new ArrayList<InventoryItem>();
 
 	public ArrayList<Customer> customerList = new ArrayList<Customer>();
@@ -85,6 +86,7 @@ public class GWT_POS implements EntryPoint {
 		hideFirstSubMenu();
 		hideSecondSubMenu();
 		hideThirdSubMenu();
+		hideSixthSubMenu();
 		setVisibilityForAllFields();
 
 		setLoginVisible(true);
@@ -96,8 +98,8 @@ public class GWT_POS implements EntryPoint {
 		passwordField.setHeight("18px");
 		loginButton.setWidth("188px");
 
-		usernameField.setText("username");
-		passwordField.setText("password");
+		//usernameField.setText("username");
+		//passwordField.setText("password");
 
 		createInvButton.setWidth("188px");
 		deleteInvButton.setWidth("188px");
@@ -144,6 +146,8 @@ public class GWT_POS implements EntryPoint {
 		RootPanel.get("createPOSTransactionTotal").add(
 				createPOSTransactionTotal);
 		RootPanel.get("createPOSTransactionPaid").add(createPOSTransactionPaid);
+		RootPanel.get("transCustomerListBox").add(transCustomerListBox);
+		RootPanel.get("transCustomerButton").add(transCustomerButton);
 
 		createPOSTransactionPaid.addItem("PAID");
 		createPOSTransactionPaid.addItem("NOT PAID");
@@ -346,17 +350,31 @@ public class GWT_POS implements EntryPoint {
 				Document.get().getElementById("listTranButton").getStyle()
 						.setDisplay(Display.BLOCK);
 
+				transCustomerListBox.clear();
+				for(Customer customer: customerList) {
+				transCustomerListBox.addItem(customer.getCustomerFirstName() + " "
+						+ customer.getCustomerLastName());
+				transCustomerListBox.setVisibleItemCount(1);
+				}
+				
+				
 				if (listTranCount % 2 == 1) {
 					hideMenu();
+					showSixthSubMenu();
 					Document.get().getElementById("listTranButton").getStyle()
+							.setDisplay(Display.BLOCK);
+					Document.get().getElementById("transCustomerListBox").getStyle()
 							.setDisplay(Display.BLOCK);
 					Document.get().getElementById("transactionTable")
 							.getStyle().setDisplay(Display.BLOCK);
+					Document.get().getElementById("transCustomerButton").getStyle()
+							.setDisplay(Display.BLOCK);
 
 					transactionTable.tableDraw();
 
 					RootPanel.get("transactionTable").add(transactionTable.table);
 				} else {
+					hideSixthSubMenu();
 					Document.get().getElementById("transactionTable")
 							.getStyle().setDisplay(Display.NONE);
 					showMenu();
@@ -368,6 +386,19 @@ public class GWT_POS implements EntryPoint {
 		ListTranButtonHandler listTranButtonHandler = new ListTranButtonHandler();
 		listTranButton.addClickHandler(listTranButtonHandler);
 
+		class CreateTransCustomerButtonHandler implements ClickHandler {
+
+			public void onClick(ClickEvent event) {
+
+				final int customerIndex = transCustomerListBox.getSelectedIndex();
+				transactionTable.tableDraw(customerList.get(customerIndex).getCustomerID());
+			}
+		}
+		
+		CreateTransCustomerButtonHandler createTransCustomerButtonHandler = new CreateTransCustomerButtonHandler();
+		transCustomerButton.addClickHandler(createTransCustomerButtonHandler);
+
+		
 		class CreateInvSubmitButtonHandler implements ClickHandler {
 
 			public void onClick(ClickEvent event) {
@@ -666,6 +697,20 @@ public class GWT_POS implements EntryPoint {
 		Document.get().getElementById("sub16").getStyle()
 				.setDisplay(Display.BLOCK);
 	}
+	private void hideSixthSubMenu() {
+		Document.get().getElementById("sub17").getStyle()
+				.setDisplay(Display.NONE);
+		Document.get().getElementById("sub18").getStyle()
+		.setDisplay(Display.NONE);
+	}
+	
+	private void showSixthSubMenu() {
+		Document.get().getElementById("sub17").getStyle()
+				.setDisplay(Display.BLOCK);
+		Document.get().getElementById("sub18").getStyle()
+		.setDisplay(Display.BLOCK);
+	}
+	
 
 	private void setVisibilityForAllFields() {
 		Document.get().getElementById("descriptionField").getStyle()
@@ -692,5 +737,7 @@ public class GWT_POS implements EntryPoint {
 				.setVisibility(Visibility.VISIBLE);
 		Document.get().getElementById("createPOSTransactionPaid").getStyle()
 				.setVisibility(Visibility.VISIBLE);
+		Document.get().getElementById("transCustomerListBox").getStyle()
+		.setVisibility(Visibility.VISIBLE);
 	}
 }
