@@ -1,7 +1,7 @@
 package web.prog.client;
 
 import java.util.ArrayList;
-
+import web.prog.shared.Customer;
 import web.prog.shared.InventoryItem;
 import web.prog.shared.InventoryTable;
 import web.prog.shared.LoginVerifier;
@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -49,16 +50,21 @@ public class GWT_POS implements EntryPoint {
 	final TextBox custLastName = new TextBox();
 	final TextBox custID = new TextBox();
 	final Button createCustSubmitButton = new Button("Submit");
+	
+	//Sub fields for POS Transactions
+	final ListBox customerListBox = new ListBox();
+	final ListBox itemListBox = new ListBox();
+	
 
 	public ArrayList<InventoryItem> invList = new ArrayList<InventoryItem>();
+
+	public ArrayList<Customer> customerList = new ArrayList<Customer>();
 
 	public InventoryTable editTable = new InventoryTable();
 	public InventoryTable deleteTable = new InventoryTable();
 
 	int currentNumberOfItems = 0;
 	int totalNum = 0;
-
-	// Sub Fields for POSTran
 
 	/**
 	 * This is the entry point method.
@@ -118,6 +124,10 @@ public class GWT_POS implements EntryPoint {
 		RootPanel.get("custLastName").add(custLastName);
 		RootPanel.get("custID").add(custID);
 		RootPanel.get("createCustSubmitButton").add(createCustSubmitButton);
+		
+		//Add sub menu information for create customer to Root Panel
+		RootPanel.get("customerListBox").add(customerListBox);
+		RootPanel.get("itemListBox").add(itemListBox);
 
 		// Focus the cursor on the name field when the app loads
 		usernameField.setFocus(true);
@@ -346,6 +356,11 @@ public class GWT_POS implements EntryPoint {
 				invList.add(invItem);
 				editTable.invList.add(invItem);
 				deleteTable.invList.add(invItem);
+				
+				itemListBox.addItem(invItem.getDescription() + " - $" + invItem.getPrice());
+				itemListBox.setVisibleItemCount(1);
+				
+				//itemListBox.
 				currentNumberOfItems++;
 				totalNum++;
 
@@ -360,6 +375,34 @@ public class GWT_POS implements EntryPoint {
 
 		CreateInvSubmitButtonHandler createInvSubmitButtonHandler = new CreateInvSubmitButtonHandler();
 		createInvSubmitButton.addClickHandler(createInvSubmitButtonHandler);
+
+		class CreateCustSubmitButtonHandler implements ClickHandler {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				final String firstName = custFirstName.getText();
+				final String lastName = custLastName.getText();
+				final String id = custID.getText();
+
+				int idNum = Integer.parseInt(id);
+
+				final Customer customer = new Customer(firstName, lastName,
+						idNum);
+
+				customerList.add(customer);
+				
+				customerListBox.addItem(customer.getCustomerFirstName() + " " + customer.getCustomerLastName());
+				customerListBox.setVisibleItemCount(1);
+
+				custFirstName.setText("");
+				custLastName.setText("");
+				custID.setText("");
+			}
+
+		}
+
+		CreateCustSubmitButtonHandler createCustSubmitButtonHandler = new CreateCustSubmitButtonHandler();
+		createCustSubmitButton.addClickHandler(createCustSubmitButtonHandler);
 	}
 
 	private void hideAll() {
@@ -525,9 +568,9 @@ public class GWT_POS implements EntryPoint {
 				.setVisibility(Visibility.VISIBLE);
 		Document.get().getElementById("custID").getStyle()
 				.setVisibility(Visibility.VISIBLE);
-		Document.get().getElementById("createPOSTCustName").getStyle()
+		Document.get().getElementById("customerListBox").getStyle()
 				.setVisibility(Visibility.VISIBLE);
-		Document.get().getElementById("createPOSTAddItems").getStyle()
+		Document.get().getElementById("itemListBox").getStyle()
 				.setVisibility(Visibility.VISIBLE);
 		Document.get().getElementById("createPOSTTotal").getStyle()
 				.setVisibility(Visibility.VISIBLE);
